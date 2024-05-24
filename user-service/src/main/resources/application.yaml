@@ -1,0 +1,9 @@
+server:
+  port: 8001
+
+spring:
+  application:
+    name: user-service
+  cloud:
+    zookeeper:
+      connect-string: 8.140.250.103:2181

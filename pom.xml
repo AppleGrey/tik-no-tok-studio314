@@ -26,6 +26,8 @@
         <module>search-service</module>
         <module>api-gateway</module>
         <module>tik-no-tok-common</module>
+        <module>auth-service</module>
+        <module>auth-service</module>
     </modules>
 
     <properties>

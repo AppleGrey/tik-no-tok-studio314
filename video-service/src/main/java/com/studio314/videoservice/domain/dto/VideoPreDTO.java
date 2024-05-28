@@ -9,6 +9,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class VideoPreDTO {
 
-    
+    private int vID;
+    private String vTitle;
+    private String coverUrl;
+    private String state;
 
 }

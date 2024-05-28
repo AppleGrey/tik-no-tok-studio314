@@ -6,4 +6,8 @@ public interface VideoService {
 
     Result getMyVideo(int uID, int page, int size);
 
+    Result deleteVideo(int uID, int vID);
+
+    Result getVideo(int vID);
+
 }

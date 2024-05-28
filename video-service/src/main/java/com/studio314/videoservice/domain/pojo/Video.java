@@ -25,5 +25,6 @@ public class Video {
     private int vLike;
     private String state;
     private Long uID;
+    private boolean isDel;
 
 }

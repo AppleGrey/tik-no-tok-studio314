@@ -15,3 +15,8 @@ spring:
             - Path=/user/**
 #          filters:
 #            - StripPrefix=1
+
+me:
+  auth:
+    excludePaths:
+      - /auth/**

@@ -30,7 +30,7 @@ public class VideoServiceImpl implements VideoService {
         Video video = videoMapper.selectById(vID);
         if (video != null && video.getUID() == uID) {
             video.setDel(true);
-            videoMapper.updateById(video);
+            videoMapper.updateDelById(video.getVID());
             return Result.success();
         }
         return Result.error("您没有执行此操作的权限");

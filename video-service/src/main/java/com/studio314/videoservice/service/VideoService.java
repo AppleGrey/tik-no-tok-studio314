@@ -1,6 +1,7 @@
 package com.studio314.videoservice.service;
 
 import com.studio314.tiknotokcommon.utils.Result;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface VideoService {
 
@@ -10,4 +11,5 @@ public interface VideoService {
 
     Result getVideo(int vID);
 
+    Result uploadVideo(MultipartFile file);
 }

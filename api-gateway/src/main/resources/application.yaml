@@ -9,12 +9,14 @@ spring:
       connect-string: 8.140.250.103:2181
     gateway:
       routes:
-        - id: user-service
-          uri: lb://user-service
+        - id: auth-service
+          uri: lb://auth-service
           predicates:
-            - Path=/user/**
-#          filters:
-#            - StripPrefix=1
+            - Path=/auth/**
+        - id: video-service
+          uri: lb://video-service
+          predicates:
+            - Path=/videos/**
 
 me:
   auth:

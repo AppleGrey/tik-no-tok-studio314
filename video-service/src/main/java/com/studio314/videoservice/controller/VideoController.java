@@ -64,8 +64,8 @@ public class VideoController {
     }
 
     @PostMapping("/upload")
-    public Result uploadVideo(@RequestParam("file") MultipartFile file){
+    public Result uploadVideo(@RequestParam("file") MultipartFile file, @RequestHeader("userID") int uID){
         log.info("接收到文件");
-        return videoService.uploadVideo(file);
+        return videoService.uploadVideo(file, uID);
     }
 }

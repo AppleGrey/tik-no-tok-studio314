@@ -11,5 +11,5 @@ public interface VideoService {
 
     Result getVideo(int vID);
 
-    Result uploadVideo(MultipartFile file);
+    Result uploadVideo(MultipartFile file, int uid);
 }

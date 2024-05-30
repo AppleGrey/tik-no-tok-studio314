@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class VideoServiceImpl implements VideoService {
@@ -66,13 +67,22 @@ public class VideoServiceImpl implements VideoService {
     }
 
     @Override
-    public Result uploadVideo(MultipartFile file){
+    public Result uploadVideo(MultipartFile file, int uid){
         if (file.isEmpty()) {
             return Result.error("上传失败，请选择一个文件。");
         }
 
-        String fileName = file.getOriginalFilename();
-        File dest = new File(uploadDir + File.separator + fileName);
+        String originalFileName = file.getOriginalFilename();
+        String fileExtension = "";
+
+        if (originalFileName != null && originalFileName.contains(".")) {
+            fileExtension = originalFileName.substring(originalFileName.lastIndexOf("."));
+        }
+
+        // 生成 UUID 作为文件名
+        String uuidFileName = UUID.randomUUID().toString() + fileExtension;
+        File dest = new File(uploadDir + File.separator + uuidFileName);
+        videoMapper.addTempVideo(uuidFileName, uid, dest.getPath());
         try {
             file.transferTo(dest);
             return Result.success("上传成功");

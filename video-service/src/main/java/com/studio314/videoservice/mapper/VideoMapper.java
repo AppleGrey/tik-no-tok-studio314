@@ -2,6 +2,7 @@ package com.studio314.videoservice.mapper;
 
 import com.studio314.videoservice.domain.dto.VideoPreDTO;
 import com.studio314.videoservice.domain.pojo.Video;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
@@ -25,4 +26,7 @@ public interface VideoMapper {
 
     @Update("update video set isDel = true where vID = #{vid}")
     void updateDelById(Long vid);
+
+    @Insert("insert into temp_video (uuid, uid, path) values (#{uuid}, #{uid}, #{path})")
+    void addTempVideo(String uuid, int uid, String path);
 }

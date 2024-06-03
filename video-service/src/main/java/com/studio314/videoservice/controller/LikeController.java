@@ -17,8 +17,8 @@ public class LikeController {
      * 点赞视频
      */
     @PostMapping
-    public Result likeVideo(@RequestHeader("userID") int uID,
-                            @PathParam("vID") int vID){
+    public Result likeVideo(@RequestHeader("userID") Long uID,
+                            @PathParam("vID") Long vID){
         return likeService.likeVideo(uID, vID);
     }
 
@@ -26,8 +26,8 @@ public class LikeController {
      * 取消点赞
      */
     @DeleteMapping
-    public Result cancelLike(@RequestHeader("userID") int uID,
-                             @PathParam("vID") int vID){
+    public Result cancelLike(@RequestHeader("userID") Long uID,
+                             @PathParam("vID") Long vID){
         return likeService.cancelLike(uID, vID);
     }
 
@@ -35,8 +35,8 @@ public class LikeController {
      * 查看我是否点赞
      */
     @GetMapping
-    public Result getLike(@RequestHeader("userID") int uID,
-                          @PathParam("vID") int vID){
+    public Result getLike(@RequestHeader("userID") Long uID,
+                          @PathParam("vID") Long vID){
         return likeService.getLike(uID, vID);
     }
 }

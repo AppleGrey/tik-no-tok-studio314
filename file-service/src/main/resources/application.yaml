@@ -1,9 +1,9 @@
 server:
-  port: 8002
+  port: 8003
 
 spring:
   application:
-    name: video-service
+    name: file-service
   cloud:
     zookeeper:
       connect-string: 8.140.250.103:2181
@@ -44,6 +44,7 @@ spring:
     listener:
       missing-topics-fatal: false # consumer listener topics 不存在时，启动项目就会报错
       type: batch #设置批量消费
+
 #  data:
 #    redis:
 #      host: 8.140.250.103
@@ -55,3 +56,9 @@ spring:
 #      use-key-prefix: false
 #      cache-null-values: false
 #      time-to-live: 1000s
+me:
+  file:
+    upload-path: 'E:/upload/'
+  task:
+    handler:
+      num: 5

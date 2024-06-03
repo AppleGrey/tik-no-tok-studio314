@@ -4,9 +4,9 @@ import com.studio314.tiknotokcommon.utils.Result;
 
 public interface LikeService {
 
-    Result likeVideo(int uID, int vID);
+    Result likeVideo(Long uID, Long vID);
 
-    Result cancelLike(int uID, int vID);
+    Result cancelLike(Long uID, Long vID);
 
-    Result getLike(int uID, int vID);
+    Result getLike(Long uID, Long vID);
 }

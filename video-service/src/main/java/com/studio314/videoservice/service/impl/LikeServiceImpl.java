@@ -19,7 +19,7 @@ public class LikeServiceImpl implements LikeService {
     VideoMapper videoMapper;
 
     @Override
-    public Result likeVideo(int uID, int vID) {
+    public Result likeVideo(Long uID, Long vID) {
         if(likeMapper.getLike(uID, vID) != null){
             return Result.error("您已经点过赞了");
         }
@@ -29,14 +29,14 @@ public class LikeServiceImpl implements LikeService {
     }
 
     @Override
-    public Result cancelLike(int uID, int vID) {
+    public Result cancelLike(Long uID, Long vID) {
         likeMapper.cancelLike(uID, vID);
         videoMapper.cancelLike(vID);
         return Result.success();
     }
 
     @Override
-    public Result getLike(int uID, int vID) {
+    public Result getLike(Long uID, Long vID) {
         if(likeMapper.getLike(uID, vID) != null){
             return Result.success(new HashMap<>(){{
                 put("isLike", true);

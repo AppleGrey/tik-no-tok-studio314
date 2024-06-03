@@ -21,7 +21,7 @@
         <module>user-service</module>
         <module>video-service</module>
         <module>comment-service</module>
-        <module>recommendation-service</module>
+        <module>file-service</module>
         <module>logging-service</module>
         <module>search-service</module>
         <module>api-gateway</module>

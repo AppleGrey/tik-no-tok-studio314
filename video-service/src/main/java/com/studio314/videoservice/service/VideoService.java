@@ -1,15 +1,20 @@
 package com.studio314.videoservice.service;
 
+import com.studio314.tiknotokcommon.dto.VideoMsgDTO;
 import com.studio314.tiknotokcommon.utils.Result;
-import org.springframework.web.multipart.MultipartFile;
+import com.studio314.videoservice.domain.dto.VideoPostDTO;
 
 public interface VideoService {
 
-    Result getMyVideo(int uID, int page, int size);
+    Result getMyVideo(Long uID, int page, int size);
 
-    Result deleteVideo(int uID, int vID);
+    Result deleteVideo(Long uID, Long vID);
 
-    Result getVideo(int vID);
+    Result getVideo(Long vID);
 
-    Result uploadVideo(MultipartFile file, int uid);
+//    Result uploadVideo(MultipartFile file, Long uid);
+
+    Result publishVideo(VideoPostDTO videoPostDTO);
+
+    boolean updateVideo(VideoMsgDTO videoMsg);
 }

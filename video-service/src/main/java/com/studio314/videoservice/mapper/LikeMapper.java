@@ -10,11 +10,11 @@ import org.apache.ibatis.annotations.Select;
 public interface LikeMapper {
 
     @Insert("insert into `like` (uID, vID) values (#{uID}, #{vID})")
-    void likeVideo(int uID, int vID);
+    void likeVideo(Long uID, Long vID);
 
     @Select("select * from `like` where uID = #{uID} and vID = #{vID}")
-    Like getLike(int uID, int vID);
+    Like getLike(Long uID, Long vID);
 
     @Delete("delete from `like` where uID = #{uID} and vID = #{vID}")
-    void cancelLike(int uID, int vID);
+    void cancelLike(Long uID, Long vID);
 }

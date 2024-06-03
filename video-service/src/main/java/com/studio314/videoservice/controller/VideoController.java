@@ -1,6 +1,7 @@
 package com.studio314.videoservice.controller;
 
 import com.studio314.tiknotokcommon.utils.Result;
+import com.studio314.videoservice.domain.dto.VideoPostDTO;
 import com.studio314.videoservice.service.VideoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +26,7 @@ public class VideoController {
      * 获取视频具体信息
      */
     @GetMapping("/{vID}")
-    public Result getVideo(@PathVariable("vID") int vID) {
+    public Result getVideo(@PathVariable("vID") Long vID) {
         return videoService.getVideo(vID);
     }
 
@@ -33,7 +34,7 @@ public class VideoController {
      * 获取我的视频
      */
     @GetMapping
-    public Result getMyVideo(@RequestHeader("userID") int uID,
+    public Result getMyVideo(@RequestHeader("userID") Long uID,
                              @RequestBody HashMap body) {
         int page = 1;
         int size = 10;
@@ -50,8 +51,8 @@ public class VideoController {
      * 删除视频
      */
     @DeleteMapping("/{vID}")
-    public Result deleteVideo(@RequestHeader("userID") int uID,
-                              @PathVariable("vID") int vID) {
+    public Result deleteVideo(@RequestHeader("userID") Long uID,
+                              @PathVariable("vID") Long vID) {
         return videoService.deleteVideo(uID, vID);
     }
 
@@ -59,13 +60,23 @@ public class VideoController {
      * 获取推荐列表
      */
     @GetMapping("/recommend")
-    public Result getRecommend(@RequestHeader("userID") int uID) {
+    public Result getRecommend(@RequestHeader("userID") Long uID) {
         return Result.success();
     }
 
-    @PostMapping("/upload")
-    public Result uploadVideo(@RequestParam("file") MultipartFile file, @RequestHeader("userID") int uID){
-        log.info("接收到文件");
-        return videoService.uploadVideo(file, uID);
+//    @PostMapping("/upload")
+//    public Result uploadVideo(@RequestParam("file") MultipartFile file, @RequestHeader("userID") Long uID){
+//        log.info("接收到文件");
+//        return videoService.uploadVideo(file, uID);
+//    }
+
+    /**
+     * 视频发布
+     */
+    @PostMapping
+    public Result publishVideo(@RequestHeader("userID") Long uID,
+                               @RequestBody VideoPostDTO videoPostDTO) {
+        videoPostDTO.setUID(uID);
+        return videoService.publishVideo(videoPostDTO);
     }
 }

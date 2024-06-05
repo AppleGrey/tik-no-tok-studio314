@@ -10,11 +10,13 @@ public interface VideoService {
 
     Result deleteVideo(Long uID, Long vID);
 
-    Result getVideo(Long vID);
+    Result getVideo(Long uID, Long vID);
 
 //    Result uploadVideo(MultipartFile file, Long uid);
 
     Result publishVideo(VideoPostDTO videoPostDTO);
 
     boolean updateVideo(VideoMsgDTO videoMsg);
+
+    Result getRecommend(Long uID, int page, int size);
 }

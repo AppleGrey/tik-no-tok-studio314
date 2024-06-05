@@ -1,5 +1,6 @@
 package com.studio314.recommendationservice.service.impl;
 
+import com.studio314.recommendationservice.domain.pojo.VideoTmp;
 import com.studio314.recommendationservice.mapper.VideoMapper;
 import com.studio314.recommendationservice.service.VideoService;
 import com.studio314.tiknotokcommon.utils.Result;
@@ -59,5 +60,11 @@ public class VideoServiceImpl implements VideoService {
             e.printStackTrace();
             return Result.error("上传失败");
         }
+    }
+
+    @Override
+    public boolean checkVideo(Long uID, String uuid) {
+        VideoTmp tmpVideo = videoMapper.getTmpVideo(uuid);
+        return tmpVideo != null && tmpVideo.getUID() == uID;
     }
 }

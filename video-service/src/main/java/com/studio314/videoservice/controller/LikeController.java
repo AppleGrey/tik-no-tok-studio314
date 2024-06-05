@@ -18,7 +18,7 @@ public class LikeController {
      */
     @PostMapping
     public Result likeVideo(@RequestHeader("userID") Long uID,
-                            @PathParam("vID") Long vID){
+                            @PathVariable("vID") Long vID){
         return likeService.likeVideo(uID, vID);
     }
 
@@ -27,7 +27,7 @@ public class LikeController {
      */
     @DeleteMapping
     public Result cancelLike(@RequestHeader("userID") Long uID,
-                             @PathParam("vID") Long vID){
+                             @PathVariable("vID") Long vID){
         return likeService.cancelLike(uID, vID);
     }
 
@@ -36,7 +36,7 @@ public class LikeController {
      */
     @GetMapping
     public Result getLike(@RequestHeader("userID") Long uID,
-                          @PathParam("vID") Long vID){
+                          @PathVariable("vID") Long vID){
         return likeService.getLike(uID, vID);
     }
 }

@@ -58,7 +58,7 @@ spring:
 #      time-to-live: 1000s
 me:
   file:
-    upload-path: 'E:/upload/'
+    upload-path: 'E:/video/'
   task:
     handler:
       num: 5

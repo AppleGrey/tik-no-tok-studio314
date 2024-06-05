@@ -3,7 +3,6 @@ package com.studio314.videoservice.mapper;
 import com.studio314.tiknotokcommon.dto.VideoMsgDTO;
 import com.studio314.videoservice.domain.dto.VideoPreDTO;
 import com.studio314.videoservice.domain.pojo.Video;
-import com.studio314.videoservice.domain.pojo.VideoTmp;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -11,10 +10,10 @@ import java.util.List;
 @Mapper
 public interface VideoMapper {
 
-    @Select("select (vID, vTitle, coverUrl, state) from video where uID = #{uID} and !isDel limit #{page}, #{size}")
+    @Select("select vID, vTitle, coverUrl, state from video where uID = #{uID} and !isDel limit #{page}, #{size}")
     List<VideoPreDTO> getMyVideo(Long uID, int page, int size);
 
-    @Update("update video set vLikes=vLikes+1 where vID = #{vID} and uID = #{uID}")
+    @Update("update video set vLikes=vLikes+1 where vID = #{vID}")
     void likeVideo(Long vID);
 
     @Update("update video set vLikes=vLikes-1 where vID = #{vID} and uID = #{uID}")
@@ -38,4 +37,29 @@ public interface VideoMapper {
 
     @Update("update video set coverUrl = #{coverUrl}, vUrl=#{vUrl}, state=#{state} where vID = #{vID}")
     void updateVideo(Video video);
+
+    @Select("SELECT v.vID, v.vTitle, v.coverUrl, v.state " +
+            "FROM video v " +
+            "WHERE v.vID NOT IN (SELECT h.vID FROM history h WHERE h.uID = #{uID}) " +
+            "ORDER BY v.vLikes DESC " +
+            "LIMIT #{page}, #{size}")
+    @Results({
+            @Result(property = "vID", column = "vID"),
+            @Result(property = "vTitle", column = "vTitle"),
+            @Result(property = "coverUrl", column = "coverUrl"),
+            @Result(property = "state", column = "state")
+    })
+    List<VideoPreDTO> getRecommendedVideos(Long uID, int page, int size);
+
+    @Update("update video set vViews=vViews+1 where vID = #{vID}")
+    void updateView(Long vID);
+
+    @Insert("insert into history (uID, vID) values (#{uID}, #{vID})")
+    void updateHistory(Long uID, Long vID);
+
+    @Select("SELECT vID, vTitle, coverUrl, state " +
+            "FROM video " +
+            "ORDER BY vLikes DESC " +
+            "LIMIT #{page}, #{size}")
+    List<VideoPreDTO> getRecommendedVideos2(int page, int size);
 }

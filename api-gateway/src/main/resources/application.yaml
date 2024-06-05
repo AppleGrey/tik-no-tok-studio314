@@ -17,8 +17,18 @@ spring:
           uri: lb://video-service
           predicates:
             - Path=/videos/**
+        - id: file-service
+          uri: lb://file-service
+          predicates:
+            - Path=/file/**
 
 me:
   auth:
     excludePaths:
       - /auth/**
+      - /file/source/**
+
+logging:
+  level:
+    root: INFO
+    com.studio314: DEBUG

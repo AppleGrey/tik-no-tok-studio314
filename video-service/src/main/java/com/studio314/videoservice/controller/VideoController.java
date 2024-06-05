@@ -26,8 +26,9 @@ public class VideoController {
      * 获取视频具体信息
      */
     @GetMapping("/{vID}")
-    public Result getVideo(@PathVariable("vID") Long vID) {
-        return videoService.getVideo(vID);
+    public Result getVideo(@RequestHeader("userID") Long uID,
+                           @PathVariable("vID") Long vID) {
+        return videoService.getVideo(uID, vID);
     }
 
     /**
@@ -35,14 +36,13 @@ public class VideoController {
      */
     @GetMapping
     public Result getMyVideo(@RequestHeader("userID") Long uID,
-                             @RequestBody HashMap body) {
-        int page = 1;
-        int size = 10;
-        if (body.containsKey("page")) {
-            page = (int) body.get("page");
+                             @RequestParam(required = false) Integer page,
+                             @RequestParam(required = false) Integer size) {
+        if (page == null) {
+            page = 1;
         }
-        if (body.containsKey("size")) {
-            size = (int) body.get("size");
+        if (size == null) {
+            size = 10;
         }
         return videoService.getMyVideo(uID, page, size);
     }
@@ -60,8 +60,18 @@ public class VideoController {
      * 获取推荐列表
      */
     @GetMapping("/recommend")
-    public Result getRecommend(@RequestHeader("userID") Long uID) {
-        return Result.success();
+    public Result getRecommend(@RequestHeader("userID") Long uID,
+                               @RequestParam(required = false) Integer page,
+                               @RequestParam(required = false) Integer size) {
+        if (page == null) {
+            page = 1;
+        }
+        if (size == null) {
+            size = 10;
+        }
+//        Result myVideo = videoService.getMyVideo(0L, 1, 10);
+        return videoService.getRecommend(uID, page, size);
+//        return myVideo;
     }
 
 //    @PostMapping("/upload")

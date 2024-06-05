@@ -3,6 +3,8 @@ package com.studio314.apigateway.filters;
 import com.studio314.apigateway.config.AuthProperties;
 import com.studio314.tiknotokcommon.utils.JWTUtils;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
@@ -26,8 +28,12 @@ public class AuthorityGlobalFilter implements GlobalFilter, Ordered {
 
     private final AntPathMatcher antPathMatcher = new AntPathMatcher();
 
+    private static final Logger logger = LoggerFactory.getLogger(AuthorityGlobalFilter.class);
+
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
+        long startTime = System.currentTimeMillis();
+
         ServerHttpRequest request = exchange.getRequest();
         if(isExclude(request.getURI().getPath())){
             return chain.filter(exchange);
@@ -48,10 +54,21 @@ public class AuthorityGlobalFilter implements GlobalFilter, Ordered {
             response.setStatusCode(HttpStatus.UNAUTHORIZED);
             return response.setComplete();
         }
-
+        System.out.println("userId:"+userId);
         exchange.getRequest().mutate().header("userID", userId);
 
-        return chain.filter(exchange);
+        logger.info("Incoming request: method={}, uri={}, userID={}",
+                exchange.getRequest().getMethod(),
+                exchange.getRequest().getURI(),
+                userId);
+
+        return chain.filter(exchange).then(Mono.fromRunnable(() -> {
+            long duration = System.currentTimeMillis() - startTime;
+
+            logger.info("Outgoing response: status={}, duration={}ms",
+                    exchange.getResponse().getStatusCode(),
+                    duration);
+        }));
     }
 
     private boolean isExclude(String path) {

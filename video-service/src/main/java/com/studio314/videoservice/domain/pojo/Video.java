@@ -17,9 +17,10 @@ public class Video {
     private LocalDateTime cTime;
     private String coverUrl;
     private String vUrl;
-    private int vLike;
+    private int vLikes;
     private String state;
     private Long uID;
     private boolean isDel;
+    private int vViews;
 
 }

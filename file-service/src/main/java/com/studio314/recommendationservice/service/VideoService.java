@@ -5,4 +5,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface VideoService {
     Result uploadVideo(MultipartFile file, Long uID);
+
+    boolean checkVideo(Long uID, String uuid);
 }

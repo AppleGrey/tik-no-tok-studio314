@@ -41,7 +41,9 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         LoginUser loginUser = redisCache.getCacheObject(redisKey);
         System.out.println(loginUser);
         if (Objects.isNull(loginUser)){
-            throw new RuntimeException("用户未登录！");
+            //返回登录失败
+            response.sendError(401,"Unauthorized");
+            return;
         }
         //存入SecurityContextHolder
         // TODO 获取权限信息封装到Authentication中

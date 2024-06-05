@@ -18,4 +18,10 @@ public class VideoController {
         return videoService.uploadVideo(file, uID);
     }
 
+    @GetMapping("/check")
+    public boolean checkVideo(@RequestParam("UUID") String UUID,
+                              @RequestParam("uID") Long uID){
+        return videoService.checkVideo(uID, UUID);
+    }
+
 }

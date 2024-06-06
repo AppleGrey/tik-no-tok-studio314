@@ -5,6 +5,7 @@ import com.studio314.recommendationservice.mapper.VideoMapper;
 import com.studio314.recommendationservice.service.VideoService;
 import com.studio314.tiknotokcommon.utils.Result;
 import jakarta.annotation.PostConstruct;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -12,9 +13,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.UUID;
 
 @Service
+@Slf4j
 public class VideoServiceImpl implements VideoService {
 
     @Autowired
@@ -50,14 +53,24 @@ public class VideoServiceImpl implements VideoService {
         }
 
         // 生成 UUID 作为文件名
-        String uuidFileName = UUID.randomUUID().toString() + fileExtension;
+        String uuid = UUID.randomUUID().toString();
+        String uuidFileName = uuid + fileExtension;
         File dest = new File(uploadDir + File.separator + uuidFileName);
-        videoMapper.addTempVideo(uuidFileName, uID, dest.getPath());
+        videoMapper.addTempVideo(uuid, uID, uuidFileName);
         try {
+            log.info("文件上传中，上传文件路径：" + dest.getPath());
             file.transferTo(dest);
-            return Result.success("上传成功");
+            log.info("文件上传成功");
+            return Result.success(
+                    new HashMap<>(){
+                        {
+                            put("UUID", uuid);
+                        }
+                    }
+            );
         } catch (IOException e) {
             e.printStackTrace();
+            log.error("文件上传失败");
             return Result.error("上传失败");
         }
     }

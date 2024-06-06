@@ -16,6 +16,7 @@ public class MyUser implements Serializable {
     private int uID;
     private String mail;
     private String role;
+    private int cnt;
 
 //    transient List<SecurityGrantedAuthority> authorities;
 

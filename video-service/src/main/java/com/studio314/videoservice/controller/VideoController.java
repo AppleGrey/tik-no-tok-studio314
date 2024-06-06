@@ -89,4 +89,10 @@ public class VideoController {
         videoPostDTO.setUID(uID);
         return videoService.publishVideo(videoPostDTO);
     }
+
+    @PostMapping("/test")
+    public Result test(@RequestBody VideoPostDTO videoPostDTO) {
+        System.out.println(videoPostDTO);
+        return Result.success();
+    }
 }

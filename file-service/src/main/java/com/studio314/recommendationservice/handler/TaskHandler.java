@@ -2,7 +2,9 @@ package com.studio314.recommendationservice.handler;
 
 
 import com.alibaba.fastjson2.JSON;
+import com.studio314.recommendationservice.domain.pojo.VideoTmp;
 import com.studio314.recommendationservice.kafka.MessageProducer;
+import com.studio314.recommendationservice.mapper.VideoMapper;
 import com.studio314.tiknotokcommon.dto.VideoMsgDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -14,12 +16,16 @@ public class TaskHandler {
     @Autowired
     MessageProducer messageProducer;
 
+    @Autowired
+    VideoMapper videoMapper;
+
     public void handleMessage(String message) {
 //        messageProducer.sendStartMessage(message);
         VideoMsgDTO videoMsg = JSON.parseObject(message, VideoMsgDTO.class);
         System.out.println("TaskStart: " + message);
         // todo: 处理视频，生成封面和链接
-        String vUrl = null;
+        VideoTmp tmpVideo = videoMapper.getTmpVideo(videoMsg.getUuid());
+        String vUrl = "/file/source/" + tmpVideo.getPath();
         String coverUrl = null;
 
         videoMsg.setVUrl(vUrl);

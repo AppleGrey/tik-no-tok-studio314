@@ -39,6 +39,7 @@ public class LoginServerImpl implements LoginService {
         log.info("用户尝试登录server：" + mail);
         //AuthenticationManager authenticate 进行用户认证
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(mail, password);
+        log.info("获取令牌成功，用户认证中");
         Authentication authenticate = authenticationManager.authenticate(authenticationToken);
         //如果认证没通过，给出对应的提示
         if (Objects.isNull(authenticate)){

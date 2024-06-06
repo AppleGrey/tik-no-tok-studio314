@@ -21,9 +21,14 @@ public class DBUserDetailService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String mail) throws UsernameNotFoundException {
-
-        MyUser myUser = userMapper.getUserByMail(mail);
-        System.out.println(myUser);
+        System.out.println("loadUserByUsername: 数据库获取信息中, mail: " + mail);
+        MyUser myUser = null;
+        try {
+            myUser = userMapper.getUserByMail(mail);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        System.out.println("获取成功" + myUser);
         if(myUser == null){
             throw new UsernameNotFoundException(mail);
         }

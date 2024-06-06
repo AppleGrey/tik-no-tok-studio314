@@ -5,6 +5,7 @@ import com.studio314.tiknotokcommon.utils.Result;
 import com.studio314.videoservice.client.FileClient;
 import com.studio314.videoservice.domain.dto.VideoPostDTO;
 import com.studio314.videoservice.domain.dto.VideoPreDTO;
+import com.studio314.videoservice.kafka.MessageSender;
 import com.studio314.videoservice.mapper.VideoMapper;
 import com.studio314.videoservice.domain.pojo.Video;
 import com.studio314.videoservice.service.VideoService;
@@ -17,13 +18,16 @@ import java.util.List;
 import java.util.Objects;
 
 @Service
-@RequiredArgsConstructor
 public class VideoServiceImpl implements VideoService {
 
     @Autowired
     VideoMapper videoMapper;
 
+    @Autowired
     FileClient fileClient;
+
+    @Autowired
+    MessageSender messageSender;
 
 //    private final String uploadDir = Constant.UPLOAD_DIR.getValue();
 
@@ -103,8 +107,12 @@ public class VideoServiceImpl implements VideoService {
 //        if (tmpVideo == null || tmpVideo.getUID() != videoPostDTO.getUID()) {
 //            return Result.error("视频不存在，请先上传视频");
 //        }
+        System.out.println(videoPostDTO);
+        if (videoPostDTO.getUuid() == null || videoPostDTO.getVTitle() == null || videoPostDTO.getVProfile() == null) {
+            return Result.error("参数错误");
+        }
         // 通过远程调用请求文件服务判断文件是否存在
-        boolean isExist = fileClient.checkVideo(videoPostDTO.getUUID(), videoPostDTO.getUID());
+        boolean isExist = fileClient.checkVideo(videoPostDTO.getUuid(), videoPostDTO.getUID());
         if (!isExist) {
             return Result.error("视频不存在，请先上传视频");
         }
@@ -114,6 +122,9 @@ public class VideoServiceImpl implements VideoService {
         video.setVTitle(videoPostDTO.getVTitle());
         video.setVProfile(videoPostDTO.getVProfile());
         videoMapper.publishVideo(video);
+        // 发送消息到 Kafka
+        VideoMsgDTO videoMsg = new VideoMsgDTO(video.getVID(), video.getUID(), videoPostDTO.getUuid(), null, null);
+        messageSender.addWaitMission(videoMsg);
         return Result.success();
     }
 

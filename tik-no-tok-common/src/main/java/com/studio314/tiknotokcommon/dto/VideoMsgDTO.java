@@ -14,7 +14,7 @@ public class VideoMsgDTO {
 
     private Long vID;
     private Long uID;
-    private String UUID;
+    private String uuid;
     private String coverUrl;
     private String vUrl;
 

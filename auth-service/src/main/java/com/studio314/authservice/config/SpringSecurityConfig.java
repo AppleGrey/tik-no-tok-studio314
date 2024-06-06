@@ -1,6 +1,6 @@
 package com.studio314.authservice.config;
 
-import com.studio314.authservice.component.JwtAuthenticationTokenFilter;
+//import com.studio314.authservice.component.JwtAuthenticationTokenFilter;
 import com.studio314.authservice.component.ResponseFilter;
 import com.studio314.authservice.component.SpringSecurityHandler;
 import jakarta.annotation.Resource;
@@ -35,7 +35,7 @@ public class SpringSecurityConfig {
     private ResponseFilter responseFilter;
 
     @Autowired
-    private JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter;
+//    private JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http)
@@ -45,7 +45,7 @@ public class SpringSecurityConfig {
                 .sessionManagement((session) -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
-                .addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class)
+//                .addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(request -> {
 //                    request.anyRequest().permitAll();
                     request.requestMatchers(HttpMethod.POST, "/auth/login").permitAll();

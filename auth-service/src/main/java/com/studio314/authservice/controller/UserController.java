@@ -34,8 +34,9 @@ public class UserController {
     public Result login(@RequestBody HashMap body) {
         String mail = (String) body.get("mail");
         String password = (String) body.get("password");
-        log.info("用户尝试登录：" + mail);
-        System.out.println(loginService);
+        log.info("用户尝试登录：{}", mail);
+        log.info("密码: {}", password);
+//        System.out.println(loginService);
         Result login = loginService.login(mail, password);
         System.out.println(login);
         return login;

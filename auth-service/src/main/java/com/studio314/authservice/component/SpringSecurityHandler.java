@@ -24,8 +24,8 @@ public class SpringSecurityHandler
         , AccessDeniedHandler, LogoutSuccessHandler, LogoutHandler {
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException, IOException {
-        PrintWriter writer = response.getWriter();
-        writer.println("登录失败");
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.getWriter().write("Authentication failed: " + exception.getMessage());
     }
 
     @Override

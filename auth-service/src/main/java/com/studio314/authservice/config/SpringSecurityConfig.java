@@ -3,6 +3,8 @@ package com.studio314.authservice.config;
 //import com.studio314.authservice.component.JwtAuthenticationTokenFilter;
 import com.studio314.authservice.component.ResponseFilter;
 import com.studio314.authservice.component.SpringSecurityHandler;
+//import com.studio314.authservice.handler.CustomAuthenticationFailureHandler;
+import com.studio314.authservice.handler.MyAuthenticationEntryPoint;
 import jakarta.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -34,7 +36,8 @@ public class SpringSecurityConfig {
     @Resource
     private ResponseFilter responseFilter;
 
-    @Autowired
+//    @Autowired
+//    private CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
 //    private JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter;
 
     @Bean
@@ -59,8 +62,9 @@ public class SpringSecurityConfig {
                     request.successHandler(handler)
                             .failureHandler(handler);
                 })
-                .exceptionHandling(request -> { // 添加访问拒绝处理
-                    request.accessDeniedHandler(handler);
+                .exceptionHandling(exeption -> {
+                    exeption.authenticationEntryPoint(new MyAuthenticationEntryPoint())
+                            .accessDeniedHandler(handler);
                 })
                 .logout(request -> { // 添加退出处理器
                     request.logoutSuccessHandler(handler)

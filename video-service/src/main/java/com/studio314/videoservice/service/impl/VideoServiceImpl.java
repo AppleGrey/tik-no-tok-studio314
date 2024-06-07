@@ -45,8 +45,8 @@ public class VideoServiceImpl implements VideoService {
 //    }
 
     @Override
-    public Result getMyVideo(Long uID, int page, int size) {
-        List<VideoPreDTO> myVideo = videoMapper.getMyVideo(uID, page, size);
+    public Result getMyVideo(Long uID, int offset, int size) {
+        List<VideoPreDTO> myVideo = videoMapper.getMyVideo(uID, offset, size);
         if (myVideo != null) {
             return Result.success(myVideo);
         }
@@ -148,11 +148,11 @@ public class VideoServiceImpl implements VideoService {
     }
 
     @Override
-    public Result getRecommend(Long uID, int page, int size) {
-        List<VideoPreDTO> recommendedVideos = videoMapper.getRecommendedVideos(uID, page, size);
+    public Result getRecommend(Long uID, int offset, int size) {
+        List<VideoPreDTO> recommendedVideos = videoMapper.getRecommendedVideos(uID, offset, size);
         // 如果没有推荐，则不筛选看过的视频
         if (recommendedVideos == null || recommendedVideos.size() < 5) {
-            recommendedVideos = videoMapper.getRecommendedVideos2(page, size);
+            recommendedVideos = videoMapper.getRecommendedVideos2(offset, size);
             return Result.success(recommendedVideos);
         }
         return Result.success(recommendedVideos);

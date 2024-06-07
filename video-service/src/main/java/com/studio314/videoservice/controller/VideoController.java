@@ -36,15 +36,15 @@ public class VideoController {
      */
     @GetMapping
     public Result getMyVideo(@RequestHeader("userID") Long uID,
-                             @RequestParam(required = false) Integer page,
+                             @RequestParam(required = false) Integer offset,
                              @RequestParam(required = false) Integer size) {
-        if (page == null) {
-            page = 1;
+        if (offset == null) {
+            offset = 0;
         }
         if (size == null) {
             size = 10;
         }
-        return videoService.getMyVideo(uID, page, size);
+        return videoService.getMyVideo(uID, offset, size);
     }
 
     /**
@@ -61,16 +61,16 @@ public class VideoController {
      */
     @GetMapping("/recommend")
     public Result getRecommend(@RequestHeader("userID") Long uID,
-                               @RequestParam(required = false) Integer page,
+                               @RequestParam(required = false) Integer offset,
                                @RequestParam(required = false) Integer size) {
-        if (page == null) {
-            page = 1;
+        if (offset == null) {
+            offset = 0;
         }
         if (size == null) {
             size = 10;
         }
 //        Result myVideo = videoService.getMyVideo(0L, 1, 10);
-        return videoService.getRecommend(uID, page, size);
+        return videoService.getRecommend(uID, offset, size);
 //        return myVideo;
     }
 

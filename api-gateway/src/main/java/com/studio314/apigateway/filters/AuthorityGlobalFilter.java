@@ -56,6 +56,8 @@ public class AuthorityGlobalFilter implements GlobalFilter, Ordered {
         List<String> headers = request.getHeaders().get("token");
         if(headers != null && !headers.isEmpty()){
             token = headers.get(0);
+        } else {
+            token = request.getQueryParams().getFirst("token");
         }
         //解析token
         String userId = null;

@@ -3,6 +3,7 @@ package com.studio314.recommendationservice.service.impl;
 import com.studio314.recommendationservice.domain.pojo.VideoTmp;
 import com.studio314.recommendationservice.mapper.VideoMapper;
 import com.studio314.recommendationservice.service.VideoService;
+import com.studio314.recommendationservice.utils.VideoUtils;
 import com.studio314.tiknotokcommon.utils.Result;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
@@ -61,6 +62,13 @@ public class VideoServiceImpl implements VideoService {
             log.info("文件上传中，上传文件路径：" + dest.getPath());
             file.transferTo(dest);
             log.info("文件上传成功");
+
+            // 判断视频格式是否正确
+            if (!VideoUtils.isVideoReadable(dest.getPath())) {
+                // 删除上传的文件
+                dest.delete();
+                return Result.error("视频格式不正确");
+            }
             return Result.success(
                     new HashMap<>(){
                         {
@@ -79,5 +87,11 @@ public class VideoServiceImpl implements VideoService {
     public boolean checkVideo(Long uID, String uuid) {
         VideoTmp tmpVideo = videoMapper.getTmpVideo(uuid);
         return tmpVideo != null && tmpVideo.getUID() == uID;
+    }
+
+    @Override
+    public VideoTmp getVideoUuid(Long vID) {
+        VideoTmp tmpVideo = videoMapper.getTmpVideoByVID(vID);
+        return tmpVideo;
     }
 }

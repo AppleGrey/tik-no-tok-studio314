@@ -13,6 +13,7 @@ public class VideoTmp {
     private int uID;
     private String path;
     private String UUID;
+    private String compress;
 
 }
 

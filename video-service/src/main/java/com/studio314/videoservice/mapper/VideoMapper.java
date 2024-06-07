@@ -10,8 +10,8 @@ import java.util.List;
 @Mapper
 public interface VideoMapper {
 
-    @Select("select vID, vTitle, coverUrl, state from video where uID = #{uID} and !isDel limit #{page}, #{size}")
-    List<VideoPreDTO> getMyVideo(Long uID, int page, int size);
+    @Select("select vID, vTitle, coverUrl, state from video where uID = #{uID} and !isDel limit #{offset}, #{size}")
+    List<VideoPreDTO> getMyVideo(Long uID, int offset, int size);
 
     @Update("update video set vLikes=vLikes+1 where vID = #{vID}")
     void likeVideo(Long vID);
@@ -40,16 +40,16 @@ public interface VideoMapper {
 
     @Select("SELECT v.vID, v.vTitle, v.coverUrl, v.state " +
             "FROM video v " +
-            "WHERE v.vID NOT IN (SELECT h.vID FROM history h WHERE h.uID = #{uID}) " +
+            "WHERE state='已发布' and v.vID NOT IN (SELECT h.vID FROM history h WHERE h.uID = #{uID}) " +
             "ORDER BY v.vLikes DESC " +
-            "LIMIT #{page}, #{size}")
+            "LIMIT #{offset}, #{size}")
     @Results({
             @Result(property = "vID", column = "vID"),
             @Result(property = "vTitle", column = "vTitle"),
             @Result(property = "coverUrl", column = "coverUrl"),
             @Result(property = "state", column = "state")
     })
-    List<VideoPreDTO> getRecommendedVideos(Long uID, int page, int size);
+    List<VideoPreDTO> getRecommendedVideos(Long uID, int offset, int size);
 
     @Update("update video set vViews=vViews+1 where vID = #{vID}")
     void updateView(Long vID);
@@ -60,6 +60,6 @@ public interface VideoMapper {
     @Select("SELECT vID, vTitle, coverUrl, state " +
             "FROM video " +
             "ORDER BY vLikes DESC " +
-            "LIMIT #{page}, #{size}")
-    List<VideoPreDTO> getRecommendedVideos2(int page, int size);
+            "LIMIT #{offset}, #{size}")
+    List<VideoPreDTO> getRecommendedVideos2(int offset, int size);
 }

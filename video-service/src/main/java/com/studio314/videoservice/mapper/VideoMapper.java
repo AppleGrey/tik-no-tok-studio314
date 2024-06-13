@@ -10,7 +10,7 @@ import java.util.List;
 @Mapper
 public interface VideoMapper {
 
-    @Select("select vID, vTitle, coverUrl, state from video where uID = #{uID} and !isDel limit #{offset}, #{size}")
+    @Select("select vID, vTitle, coverUrl, state from video where uID = #{uID} and !isDel and vID < #{offset} order by vID desc limit #{size}")
     List<VideoPreDTO> getMyVideo(Long uID, int offset, int size);
 
     @Update("update video set vLikes=vLikes+1 where vID = #{vID}")
@@ -19,7 +19,7 @@ public interface VideoMapper {
     @Update("update video set vLikes=vLikes-1 where vID = #{vID} and uID = #{uID}")
     void cancelLike(Long vID);
 
-    @Select("select * from video where vID = #{vID}")
+    @Select("select * from video where vID = #{vID} and !isDel")
     Video selectById(Long vID);
 
     @Update("update video set isDel = true where vID = #{vid}")
@@ -40,16 +40,16 @@ public interface VideoMapper {
 
     @Select("SELECT v.vID, v.vTitle, v.coverUrl, v.state " +
             "FROM video v " +
-            "WHERE state='已发布' and v.vID NOT IN (SELECT h.vID FROM history h WHERE h.uID = #{uID}) " +
+            "WHERE isDel=false and state='已发布' and v.vID NOT IN (SELECT h.vID FROM history h WHERE h.uID = #{uID}) " +
             "ORDER BY v.vLikes DESC " +
-            "LIMIT #{offset}, #{size}")
+            "LIMIT #{size}")
     @Results({
             @Result(property = "vID", column = "vID"),
             @Result(property = "vTitle", column = "vTitle"),
             @Result(property = "coverUrl", column = "coverUrl"),
             @Result(property = "state", column = "state")
     })
-    List<VideoPreDTO> getRecommendedVideos(Long uID, int offset, int size);
+    List<VideoPreDTO> getRecommendedVideos(Long uID, int size);
 
     @Update("update video set vViews=vViews+1 where vID = #{vID}")
     void updateView(Long vID);
@@ -58,8 +58,11 @@ public interface VideoMapper {
     void updateHistory(Long uID, Long vID);
 
     @Select("SELECT vID, vTitle, coverUrl, state " +
-            "FROM video " +
+            "FROM video WHERE state='已发布' and isDel=false " +
             "ORDER BY vLikes DESC " +
-            "LIMIT #{offset}, #{size}")
-    List<VideoPreDTO> getRecommendedVideos2(int offset, int size);
+            "LIMIT #{size}")
+    List<VideoPreDTO> getRecommendedVideos2(int size);
+
+    @Select("select vID from history where uID = #{uID}")
+    List<Long> getHistory(Long uID);
 }

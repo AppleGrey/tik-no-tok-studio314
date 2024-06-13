@@ -148,11 +148,16 @@ public class VideoServiceImpl implements VideoService {
     }
 
     @Override
-    public Result getRecommend(Long uID, int offset, int size) {
-        List<VideoPreDTO> recommendedVideos = videoMapper.getRecommendedVideos(uID, offset, size);
+    public Result getRecommend(Long uID, int size) {
+        List<Long> his = videoMapper.getHistory(uID);
+        System.out.println(his);
+        List<VideoPreDTO> recommendedVideos = videoMapper.getRecommendedVideos(uID, size);
+        System.out.println(recommendedVideos);
         // 如果没有推荐，则不筛选看过的视频
-        if (recommendedVideos == null || recommendedVideos.size() < 5) {
-            recommendedVideos = videoMapper.getRecommendedVideos2(offset, size);
+        if (recommendedVideos == null || recommendedVideos.isEmpty()) {
+            recommendedVideos = videoMapper.getRecommendedVideos2(size);
+            System.out.println(2222);
+            System.out.println(recommendedVideos);
             return Result.success(recommendedVideos);
         }
         return Result.success(recommendedVideos);

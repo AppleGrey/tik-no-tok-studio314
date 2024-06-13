@@ -3,6 +3,7 @@ package com.studio314.authservice.service.impl;
 import com.studio314.authservice.config.RedisCache;
 import com.studio314.authservice.mapper.UserMapper;
 import com.studio314.authservice.pojo.LoginUser;
+import com.studio314.authservice.pojo.MyUser;
 import com.studio314.authservice.service.LoginService;
 import com.studio314.tiknotokcommon.utils.JWTUtils;
 import com.studio314.tiknotokcommon.utils.Result;
@@ -65,6 +66,11 @@ public class LoginServerImpl implements LoginService {
 
     @Override
     public Result register(String name, String mail, String password) {
+        MyUser user = userMapper.getUserByMail(mail);
+        if (user != null) {
+            log.error("用户注册失败，邮箱已被注册：" + mail);
+            return Result.error("邮箱已被注册");
+        }
         String encodePassword = bCryptPasswordEncoder.encode(password);
         userMapper.registerUser(name, mail, encodePassword);
         log.info("用户注册成功：" + mail);

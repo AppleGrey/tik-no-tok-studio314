@@ -18,7 +18,6 @@ import java.io.File;
 @RequestMapping("/videos")
 public class VideoController {
 
-    private static final Logger log = LoggerFactory.getLogger(VideoController.class);
     @Autowired
     VideoService videoService;
 
@@ -39,7 +38,7 @@ public class VideoController {
                              @RequestParam(required = false) Integer offset,
                              @RequestParam(required = false) Integer size) {
         if (offset == null) {
-            offset = 0;
+            offset = 99999;
         }
         if (size == null) {
             size = 10;
@@ -61,24 +60,14 @@ public class VideoController {
      */
     @GetMapping("/recommend")
     public Result getRecommend(@RequestHeader("userID") Long uID,
-                               @RequestParam(required = false) Integer offset,
                                @RequestParam(required = false) Integer size) {
-        if (offset == null) {
-            offset = 0;
-        }
         if (size == null) {
             size = 10;
         }
 //        Result myVideo = videoService.getMyVideo(0L, 1, 10);
-        return videoService.getRecommend(uID, offset, size);
+        return videoService.getRecommend(uID, size);
 //        return myVideo;
     }
-
-//    @PostMapping("/upload")
-//    public Result uploadVideo(@RequestParam("file") MultipartFile file, @RequestHeader("userID") Long uID){
-//        log.info("接收到文件");
-//        return videoService.uploadVideo(file, uID);
-//    }
 
     /**
      * 视频发布

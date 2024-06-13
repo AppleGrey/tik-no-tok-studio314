@@ -18,5 +18,5 @@ public interface VideoService {
 
     boolean updateVideo(VideoMsgDTO videoMsg);
 
-    Result getRecommend(Long uID, int page, int size);
+    Result getRecommend(Long uID, int size);
 }

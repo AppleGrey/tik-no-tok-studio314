@@ -21,6 +21,18 @@ spring:
           uri: lb://file-service
           predicates:
             - Path=/file/**
+      default-filters:
+        - name: RequestRateLimiter #固定的
+          args:
+            key-resolver: '#{@pathKeyResolver}' # 用于限流的键的解析器的 Bean 对象的名字。它使用 SpEL 表达式根据#{@beanName}从 Spring 容器中获取 Bean 对象。
+            redis-rate-limiter.replenishRate: 15 # 令牌桶每秒填充平均速率
+            redis-rate-limiter.burstCapacity: 45 # 令牌桶的总容量
+
+  data:
+    redis:
+      host: 8.140.250.103
+      port: 6379
+      password: 123456
 
 me:
   auth:

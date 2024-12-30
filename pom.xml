@@ -18,12 +18,8 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>user-service</module>
         <module>video-service</module>
-        <module>comment-service</module>
         <module>file-service</module>
-        <module>logging-service</module>
-        <module>search-service</module>
         <module>api-gateway</module>
         <module>tik-no-tok-common</module>
         <module>auth-service</module>
@@ -52,12 +48,6 @@
                 <artifactId>mysql-connector-java</artifactId>
                 <version>${mysql.version}</version>
             </dependency>
-            <!-- mybatis plus 管理 -->
-<!--            <dependency>-->
-<!--                <groupId>com.baomidou</groupId>-->
-<!--                <artifactId>mybatis-plus-boot-starter</artifactId>-->
-<!--                <version>${mybatis-plus.version}</version>-->
-<!--            </dependency>-->
         </dependencies>
     </dependencyManagement>
 
